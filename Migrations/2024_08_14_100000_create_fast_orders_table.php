@@ -19,6 +19,7 @@ return new class extends Migration
             $table->bigInteger('product_id');
             $table->boolean('status')->default(0);
             FastOrder::timestampFields($table);
+            $table->softDeletes();
         });
     }
 

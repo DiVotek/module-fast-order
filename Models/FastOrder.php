@@ -6,12 +6,14 @@ use App\Traits\HasStatus;
 use App\Traits\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FastOrder extends Model
 {
     use HasFactory;
     use HasStatus;
     use HasTimestamps;
+    use SoftDeletes;
 
     protected $fillable = ['name', 'phone', 'product_id', 'status'];
 
@@ -19,4 +21,13 @@ class FastOrder extends Model
     {
         return 'fast_orders';
     }
+
+    public const OFF = 0;
+
+    public const ON = 1;
+
+    public const STATUSES = [
+        self::ON => 'Viewed',
+        self::OFF => 'Not viewed',
+    ];
 }

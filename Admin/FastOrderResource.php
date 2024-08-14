@@ -7,7 +7,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Modules\FastOrder\Models\FastOrder;
 use Modules\FastOrder\Admin\FastOrderResource\Pages;
 
@@ -50,7 +52,12 @@ class FastOrderResource extends Resource
                 TableSchema::getName(),
                 TableSchema::getPhone(),
                 TableSchema::getProduct(),
-                TableSchema::getStatus(),
+                TextColumn::make('status')
+                    ->label(__('Status'))
+                    ->sortable()
+                    ->getStateUsing(function ($record) {
+                        return __(FastOrder::STATUSES[$record->status]);
+                    }),
                 TableSchema::getUpdatedAt(),
             ])
             ->headerActions([
@@ -65,8 +72,8 @@ class FastOrderResource extends Resource
                 TableSchema::getFilterStatus(),
             ])
             ->actions([
-//                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DetachAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -77,7 +84,9 @@ class FastOrderResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()->withoutGlobalScopes();
+        return parent::getEloquentQuery()->withoutGlobalScopes([
+            SoftDeletingScope::class,
+        ]);
     }
 
     public static function getRelations(): array
@@ -91,7 +100,7 @@ class FastOrderResource extends Resource
     {
         return [
             'index' => Pages\ListFastOrders::route('/'),
-//            'view' => Pages\ViewFastOrder::route('/{record}'),
+            'view' => Pages\ViewFastOrder::route('/{record}'),
         ];
     }
 }
