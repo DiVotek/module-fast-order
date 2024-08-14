@@ -1,0 +1,11 @@
+{
+    "name": "FastOrder",
+    "alias": "fastorder",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\FastOrder\\Providers\\FastOrderServiceProvider"
+    ],
+    "files": []
+}
