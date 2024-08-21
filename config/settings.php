@@ -2,7 +2,7 @@
 
 return [
     'fastOrder' => [
-        'show' => true,
-        'button' => '',
+        'show' => 'fast_order_show',
+        'name' => 'fast_order_name',
     ],
 ];

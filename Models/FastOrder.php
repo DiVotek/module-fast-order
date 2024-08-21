@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FastOrder extends Model
 {
     use HasFactory;
-    use HasStatus;
     use HasTimestamps;
     use SoftDeletes;
 
