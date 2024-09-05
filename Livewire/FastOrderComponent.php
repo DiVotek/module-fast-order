@@ -13,7 +13,7 @@ class FastOrderComponent extends Component
     public $modalEvent = 'fastOrder';
     public function render()
     {
-        return view('fastorder::livewire.fast-order-component');
+        return view('template::' . setting(config('settings.fastOrder.design'),'fastOrder.default'));
     }
 
     public function submit()

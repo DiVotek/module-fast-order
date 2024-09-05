@@ -3,6 +3,7 @@
 namespace Modules\FastOrder\Admin;
 
 use App\Models\Language;
+use App\Services\Schema;
 use App\Services\TableSchema;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -77,8 +78,9 @@ class FastOrderResource extends Resource
                     ->modal()
                     ->fillForm(function (): array {
                         return [
-                            'show' => setting(config('settings.fastOrder.show'),false),
+                            'show' => setting(config('settings.fastOrder.show'), false),
                             'name' => setting(config('settings.fastOrder.name'), []),
+                            'design' => setting(config('settings.fast0rder.design'), 'fast-order.default'),
                         ];
                     })
                     ->action(function (array $data): void {
@@ -89,16 +91,16 @@ class FastOrderResource extends Resource
                     })
                     ->form(function ($form) {
                         $fields = [
-                            TextInput::make('name.'. main_lang())
+                            TextInput::make('name.' . main_lang())
                                 ->label(__('Name'))
                                 ->required(),
                         ];
-                        if(is_multi_lang()){
+                        if (is_multi_lang()) {
                             foreach (Language::all() as $lang) {
-                                if($lang->id == main_lang_id()){
+                                if ($lang->id == main_lang_id()) {
                                     continue;
                                 }
-                                $fields[] = TextInput::make('name.'. $lang->slug)
+                                $fields[] = TextInput::make('name.' . $lang->slug)
                                     ->label(__('Name') . ' ' . $lang->name)
                                     ->required();
                             }
@@ -111,6 +113,7 @@ class FastOrderResource extends Resource
                                         ->helperText(__('Enable or disable fast order button'))
                                         ->required(),
                                     ...$fields,
+                                    Schema::getModuleTemplateSelect('fast-order'),
                                 ]),
                             ]);
                     }),
